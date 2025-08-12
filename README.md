@@ -214,6 +214,28 @@ Parameters:
 - `error_class`: Filter by error class
 - `app_version`: Filter by app version
 
+### Release Groups
+
+#### list_release_groups
+
+Lists release groups for a project (grouped by release stage and app version).
+
+Parameters:
+- `project_id` (required): Bugsnag project ID
+- `release_stage_name` (required): Release stage name (e.g., production)
+- `sort`: Sort order for release groups
+- `top_only`: Return only the top release groups (default: false)
+- `visible_only`: Return only visible release groups (default: false)
+- `per_page`: Page size
+- `page_token`: Pagination token from Link header
+
+#### view_release_group
+
+Retrieves a specific release group by ID.
+
+Parameters:
+- `id` (required): Release group ID
+
 ## 🛠️ Advanced Usage
 
 ### Testing Your API Key

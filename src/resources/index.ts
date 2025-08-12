@@ -8,6 +8,7 @@ import { handleOrganizationResource } from './organizations.js';
 import { handleProjectResource } from './projects.js';
 import { handleErrorResource } from './errors.js';
 import { handleEventResource } from './events.js';
+import { handleReleaseGroupResource } from './release_groups.js';
 
 /**
  * Handle a resource request
@@ -20,6 +21,7 @@ export async function handleResourceRequest(uri: string, client: AxiosInstance) 
     handleProjectResource,
     handleErrorResource,
     handleEventResource,
+    handleReleaseGroupResource,
   ];
 
   for (const handler of handlers) {

@@ -14,6 +14,7 @@ import {
   handleViewTabs,
 } from './events.js';
 import { handleListIssues, handleViewIssue } from './issues.js';
+import { handleListReleaseGroups, handleViewReleaseGroup } from './release_groups.js';
 
 // Export all tool handlers
 export {
@@ -30,6 +31,8 @@ export {
   handleViewIssue,
   handleSearchIssues,
   handleViewTabs,
+  handleListReleaseGroups,
+  handleViewReleaseGroup,
 };
 
 // Tool definitions for registration
@@ -240,6 +243,58 @@ export const toolDefinitions = [
         },
       },
       required: ['project_id', 'event_id'],
+    },
+  },
+  {
+    name: 'list_release_groups',
+    description: 'List release groups for a project (grouped by release stage and app version)',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: 'string',
+          description: 'Bugsnag project ID',
+        },
+        release_stage_name: {
+          type: 'string',
+          description: 'Release stage to list release groups for (e.g., production)',
+        },
+        sort: {
+          type: 'string',
+          description: 'Sort order for release groups',
+        },
+        top_only: {
+          type: 'boolean',
+          description: 'Return only the top release groups',
+        },
+        visible_only: {
+          type: 'boolean',
+          description: 'Return only visible release groups',
+        },
+        per_page: {
+          type: 'number',
+          description: 'How many results to return per page',
+        },
+        page_token: {
+          type: 'string',
+          description: 'Pagination token from Link header',
+        },
+      },
+      required: ['project_id', 'release_stage_name'],
+    },
+  },
+  {
+    name: 'view_release_group',
+    description: 'Retrieve a specific release group by ID',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'Release group ID',
+        },
+      },
+      required: ['id'],
     },
   },
 ];

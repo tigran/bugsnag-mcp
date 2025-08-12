@@ -84,6 +84,10 @@ export class BugsnagServer {
             return await tools.handleViewExceptionChain(request.params.arguments);
           case 'view_tabs':
             return await tools.handleViewTabs(request.params.arguments);
+          case 'list_release_groups':
+            return await tools.handleListReleaseGroups(request.params.arguments);
+          case 'view_release_group':
+            return await tools.handleViewReleaseGroup(request.params.arguments);
           case 'search_issues':
             return await tools.handleSearchIssues(request.params.arguments);
           default:
