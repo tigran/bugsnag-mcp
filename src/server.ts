@@ -90,6 +90,18 @@ export class BugsnagServer {
             return await tools.handleViewReleaseGroup(request.params.arguments);
           case 'search_issues':
             return await tools.handleSearchIssues(request.params.arguments);
+          case 'list_feature_flags':
+            return await tools.handleListFeatureFlags(request.params.arguments);
+          case 'get_feature_flag':
+            return await tools.handleGetFeatureFlag(request.params.arguments);
+          case 'list_feature_flag_variants_by_id':
+            return await tools.handleListFeatureFlagVariantsById(request.params.arguments);
+          case 'list_feature_flag_variants_by_name':
+            return await tools.handleListFeatureFlagVariantsByName(request.params.arguments);
+          case 'get_feature_flag_error_overview':
+            return await tools.handleGetFeatureFlagErrorOverview(request.params.arguments);
+          case 'get_variant_error_overview':
+            return await tools.handleGetVariantErrorOverview(request.params.arguments);
           default:
             throw new McpError(ErrorCode.MethodNotFound, `Unknown tool: ${request.params.name}`);
         }

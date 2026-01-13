@@ -15,6 +15,14 @@ import {
 } from './events.js';
 import { handleListIssues, handleViewIssue } from './issues.js';
 import { handleListReleaseGroups, handleViewReleaseGroup } from './release_groups.js';
+import {
+  handleListFeatureFlags,
+  handleGetFeatureFlag,
+  handleListFeatureFlagVariantsById,
+  handleListFeatureFlagVariantsByName,
+  handleGetFeatureFlagErrorOverview,
+  handleGetVariantErrorOverview,
+} from './feature_flags.js';
 
 // Export all tool handlers
 export {
@@ -33,6 +41,12 @@ export {
   handleViewTabs,
   handleListReleaseGroups,
   handleViewReleaseGroup,
+  handleListFeatureFlags,
+  handleGetFeatureFlag,
+  handleListFeatureFlagVariantsById,
+  handleListFeatureFlagVariantsByName,
+  handleGetFeatureFlagErrorOverview,
+  handleGetVariantErrorOverview,
 };
 
 // Tool definitions for registration
@@ -295,6 +309,194 @@ export const toolDefinitions = [
         },
       },
       required: ['id'],
+    },
+  },
+  {
+    name: 'list_feature_flags',
+    description: 'List feature flags on a project',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: 'string',
+          description: 'Bugsnag project ID',
+        },
+        release_stage_name: {
+          type: 'string',
+          description: 'Release stage name to get the feature flags for (e.g., production)',
+        },
+        starred_at_top: {
+          type: 'boolean',
+          description: 'Whether to return starred Feature Flags at the top of the list',
+        },
+        include_variant_summary: {
+          type: 'boolean',
+          description: 'Whether to include a summary of the Variants for each Feature Flag',
+        },
+        q: {
+          type: 'string',
+          description: 'Search for feature flags with a name matching this query',
+        },
+        first_seen: {
+          type: 'string',
+          enum: ['all', 'this_week', 'today'],
+          description: 'Filter to Feature Flags first seen within the specified time frame',
+        },
+        include_inactive: {
+          type: 'boolean',
+          description: 'Whether to include inactive Feature Flags',
+        },
+        sort: {
+          type: 'string',
+          enum: ['name', 'first_seen'],
+          description: 'Which field to sort on',
+        },
+        direction: {
+          type: 'string',
+          enum: ['asc', 'desc'],
+          description: 'Sort direction',
+        },
+        per_page: {
+          type: 'number',
+          description: 'How many results to return per page',
+        },
+      },
+      required: ['project_id', 'release_stage_name'],
+    },
+  },
+  {
+    name: 'get_feature_flag',
+    description: 'Get a specific feature flag by ID',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: 'string',
+          description: 'Bugsnag project ID',
+        },
+        id: {
+          type: 'string',
+          description: 'Feature flag ID',
+        },
+        release_stage_name: {
+          type: 'string',
+          description: 'Release stage name to get the feature flag for (e.g., production)',
+        },
+        include_variant_summary: {
+          type: 'boolean',
+          description: 'Whether to include a summary of the Variants for the Feature Flag',
+        },
+      },
+      required: ['project_id', 'id', 'release_stage_name'],
+    },
+  },
+  {
+    name: 'list_feature_flag_variants_by_id',
+    description: 'List variants on a feature flag by ID',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: 'string',
+          description: 'Bugsnag project ID',
+        },
+        id: {
+          type: 'string',
+          description: 'Feature flag ID',
+        },
+        release_stage_name: {
+          type: 'string',
+          description: 'Release stage name to get the variants for',
+        },
+        q: {
+          type: 'string',
+          description: 'Search for variants with a name matching this query',
+        },
+        per_page: {
+          type: 'number',
+          description: 'How many results to return per page',
+        },
+      },
+      required: ['project_id', 'id'],
+    },
+  },
+  {
+    name: 'list_feature_flag_variants_by_name',
+    description: 'List variants on a feature flag by name',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: 'string',
+          description: 'Bugsnag project ID',
+        },
+        name: {
+          type: 'string',
+          description: 'Feature flag name (case-sensitive)',
+        },
+        release_stage_name: {
+          type: 'string',
+          description: 'Release stage name to get the variants for',
+        },
+        q: {
+          type: 'string',
+          description: 'Search for variants with a name matching this query',
+        },
+        per_page: {
+          type: 'number',
+          description: 'How many results to return per page',
+        },
+      },
+      required: ['project_id', 'name'],
+    },
+  },
+  {
+    name: 'get_feature_flag_error_overview',
+    description: "Get a feature flag's error overview",
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: 'string',
+          description: 'Bugsnag project ID',
+        },
+        id: {
+          type: 'string',
+          description: 'Feature flag ID',
+        },
+        release_stage_name: {
+          type: 'string',
+          description: 'Release stage name to get the error overview for',
+        },
+      },
+      required: ['project_id', 'id', 'release_stage_name'],
+    },
+  },
+  {
+    name: 'get_variant_error_overview',
+    description: "Get a feature flag variant's error overview",
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: 'string',
+          description: 'Bugsnag project ID',
+        },
+        id: {
+          type: 'string',
+          description: 'Feature flag ID',
+        },
+        variant_ids: {
+          type: 'array',
+          items: { type: 'string' },
+          description: 'IDs of the feature flag variants',
+        },
+        release_stage_name: {
+          type: 'string',
+          description: 'Release stage name to get the error overview for',
+        },
+      },
+      required: ['project_id', 'id', 'variant_ids', 'release_stage_name'],
     },
   },
 ];
